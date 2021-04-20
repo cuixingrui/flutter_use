@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_card_swipper/flutter_card_swiper.dart';
 import 'package:flutter_use/app/typedef/function.dart';
 import 'package:flutter_use/app/utils/ui/auto_ui.dart';
 
 class HimalayaBanner extends StatelessWidget {
   HimalayaBanner({
-    Key key,
-    this.data,
-    this.onTap,
+    Key? key,
+    required this.data,
+    required this.onTap,
   }) : super(key: key);
 
   ///数据源

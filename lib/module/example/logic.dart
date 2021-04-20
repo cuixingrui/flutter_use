@@ -1,5 +1,6 @@
 import 'package:flutter_use/app/config/route_config.dart';
 import 'package:flutter_use/app/utils/ui/show.dart';
+import 'package:flutter_use/http/http.dart';
 import 'package:get/get.dart';
 
 import 'state.dart';
@@ -33,7 +34,9 @@ class ExampleLogic extends GetxController {
         break;
       case 'testLayout':
         Get.toNamed(RouteConfig.testLayout);
-        // SmartDialog.instance.show();
+        break;
+      case 'testNet':
+        testHttp();
         break;
     }
   }

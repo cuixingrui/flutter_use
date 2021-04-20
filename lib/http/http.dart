@@ -1,16 +1,40 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_toolkit_easy/flutter_toolkit.dart';
+import 'package:flutter_use/bean/test/base_info_bean.dart';
+import 'package:flutter_use/generated/json/base/json_convert_content.dart';
 import 'package:flutter_use/views/dialog/easy/easy_dialog.dart';
 
+///举例：搞定
+testHttp() async {
+  Log.d('测试Http');
+  var result = await Http.get(
+    'https://www.wanandroid.com/banner/json',
+    // 'https://api.ixiaowai.cn/api/api.php?return=json',
+  );
+
+  // List list = jsonDecode(result);
+  // List<NetTestBean> mList = list.map((e) {
+  //   return NetTestBean().fromJson(jsonDecode(e));
+  // }).toList();
+  //
+  // showToast(mList[0].title);
+  Log.i(result.toString());
+}
+
 class Http {
-  static NetRequestCallback _callback;
+  static NetRequestCallback _callback = NetRequestCallback(
+    //请求开始
+    onStart: () => EasyDialog.showLoading(),
+    //请求结束
+    onEnd: () => EasyDialog.dismiss(),
+  );
 
   static void init({
-    String baseUrl,
-    int connectTimeout,
-    int sendTimeout,
-    int receiveTimeout,
-    List<Interceptor> interceptors,
+    String baseUrl = '',
+    int? connectTimeout,
+    int? sendTimeout,
+    int? receiveTimeout,
+    List<Interceptor>? interceptors,
   }) {
     NetUtil.instance.init(
       baseUrl: baseUrl,
@@ -19,16 +43,14 @@ class Http {
       receiveTimeout: receiveTimeout,
       interceptors: interceptors,
     );
-    //处理加载动画
-    _dealLoading();
   }
 
   ///Get请求
   static Future get(
     String path, {
-    Map<String, dynamic> queryParameters,
-    Options options,
-    CancelToken cancelToken,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
   }) async {
     var response = await request(
       path,
@@ -37,16 +59,16 @@ class Http {
       options: options,
       cancelToken: cancelToken,
     );
-    return _dealResponse(response);
+    return response;
   }
 
   ///Post请求
   static Future post(
     String path, {
     data,
-    Map<String, dynamic> queryParameters,
-    Options options,
-    CancelToken cancelToken,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
   }) async {
     var response = await request(
       path,
@@ -56,16 +78,16 @@ class Http {
       options: options,
       cancelToken: cancelToken,
     );
-    return _dealResponse(response);
+    return response;
   }
 
   ///Put请求
   static Future put(
     String path, {
     data,
-    Map<String, dynamic> queryParameters,
-    Options options,
-    CancelToken cancelToken,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
   }) async {
     var response = await request(
       path,
@@ -75,16 +97,16 @@ class Http {
       options: options,
       cancelToken: cancelToken,
     );
-    return _dealResponse(response);
+    return response;
   }
 
   ///Delete请求
   static Future delete(
     String path, {
     data,
-    Map<String, dynamic> queryParameters,
-    Options options,
-    CancelToken cancelToken,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
   }) async {
     var response = await request(
       path,
@@ -94,7 +116,7 @@ class Http {
       options: options,
       cancelToken: cancelToken,
     );
-    return _dealResponse(response);
+    return response;
   }
 
   /// Request 操作
@@ -104,15 +126,16 @@ class Http {
     String path, {
     HttpMethod method = HttpMethod.get,
     data,
-    Map<String, dynamic> queryParameters,
-    Options options,
-    CancelToken cancelToken,
-    ProgressCallback onSendProgress,
-    ProgressCallback onReceiveProgress,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
   }) async {
     _callback.onStart();
     var response = await NetUtil.instance.request(
       path,
+      method: method,
       data: data,
       queryParameters: queryParameters,
       options: options,
@@ -121,28 +144,16 @@ class Http {
       onReceiveProgress: onReceiveProgress,
     );
     _callback.onEnd();
-    return response.data;
+    return _dealResponse(response);
   }
 
   ///处理返回数据 处理通用结构
-  static Future _dealResponse(Future response) {
+  static dynamic _dealResponse(var response) {
+    Log.i(response);
     //处理数据
+    BaseInfoBean bean = BaseInfoBean().fromJson(response);
 
-    return response;
-  }
-
-  ///处理加载动画
-  static void _dealLoading() {
-    _callback = NetRequestCallback(
-      onStart: () {
-        //请求开始
-        EasyDialog.showLoading();
-      },
-      onEnd: () {
-        //请求结束
-        EasyDialog.dismiss();
-      },
-    );
+    return bean.data;
   }
 
   ///设置请求头
@@ -151,7 +162,7 @@ class Http {
   }
 
   ///设置取消token
-  static void cancelRequests({CancelToken token}) {
+  static void cancelRequests({CancelToken? token}) {
     NetUtil.instance.cancelRequests(token: token);
   }
 }
@@ -161,8 +172,8 @@ typedef HttpCallback = void Function();
 
 class NetRequestCallback {
   NetRequestCallback({
-    this.onEnd,
-    this.onStart,
+    required this.onEnd,
+    required this.onStart,
   });
 
   ///开始

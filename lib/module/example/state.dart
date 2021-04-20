@@ -2,7 +2,7 @@ import 'package:flutter_use/bean/common/btn_info.dart';
 import 'package:flutter_use/bean/common/tree_info.dart';
 
 class ExampleState {
-  List<TreeTwiceInfo> trees;
+  late List<TreeTwiceInfo> trees;
 
   ExampleState() {
     trees = [
@@ -27,11 +27,12 @@ class ExampleState {
         ],
       ),
 
-      //布局
+      //测试
       TreeTwiceInfo(
-        title: '布局',
+        title: '测试',
         btnInfo: [
           BtnInfo(title: '测试布局', tag: 'testLayout'),
+          BtnInfo(title: '测试网络', tag: 'testNet'),
         ],
       ),
     ];

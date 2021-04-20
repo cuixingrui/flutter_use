@@ -1,4 +1,4 @@
-## 实体命名生成
+# 实体命名生成
 
 ### 使用 build_runner 生成 .g.dart 文件
 flutter packages pub run build_runner build
@@ -10,3 +10,4 @@ flutter packages pub run build_runner watch
 flutter packages pub run build_runner build --delete-conflicting-outputs
 
 
+### JSON转实体网站：https://caijinglong.github.io/json2dart/index_ch.html
