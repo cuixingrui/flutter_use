@@ -23,16 +23,11 @@ enum HttpMethod {
 
 ///网络封装
 class NetUtil {
+  factory NetUtil() => instance;
+
   static NetUtil? _instance;
 
-  static NetUtil get instance => _getInstance();
-
-  static NetUtil _getInstance() {
-    if (_instance == null) {
-      _instance = NetUtil._internal();
-    }
-    return _instance!;
-  }
+  static NetUtil get instance => _instance ??= NetUtil._internal();
 
   Dio dio = Dio();
   CancelToken _cancelToken = CancelToken();
@@ -232,6 +227,13 @@ class NetUtil {
 
   /// 添加拦截器
   void addInterceptor(Interceptor interceptor) {
+    //一种类型的拦截器只能添加一次
+    for (var item in dio.interceptors) {
+      if (item.runtimeType == interceptor.runtimeType) {
+        return;
+      }
+    }
+
     dio.interceptors.add(interceptor);
   }
 

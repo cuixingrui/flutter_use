@@ -8,9 +8,9 @@ import 'package:flutter_use/views/dialog/easy/easy_dialog.dart';
 
 import 'net/net_util.dart';
 
-///举例：搞定
+///dio封装 使用举例
 testHttp() async {
-  //处理一些初始化设置，必须
+  //处理一些初始化设置
   Http.init();
   Toolkit.Log.d('测试Http');
 
@@ -175,17 +175,17 @@ class LoadingInterceptor extends Interceptor {
   }
 
   @override
-  void onResponse(Response response, ResponseInterceptorHandler handler) {
+  void onResponse(Response response, ResponseInterceptorHandler handler) async {
     //关闭弹窗
-    if (isLoading && EasyDialog.isExist()) EasyDialog.dismiss();
+    if (isLoading && EasyDialog.isExist()) await EasyDialog.dismiss();
 
     handler.next(response);
   }
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioError err, ErrorInterceptorHandler handler) async {
     //关闭弹窗
-    if (isLoading && EasyDialog.isExist()) EasyDialog.dismiss();
+    if (isLoading && EasyDialog.isExist()) await EasyDialog.dismiss();
 
     handler.next(err);
   }

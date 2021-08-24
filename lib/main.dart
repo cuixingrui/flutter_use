@@ -20,14 +20,15 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       initialRoute: RouteConfig.main,
       getPages: RouteConfig.getPages,
-      builder: _builder,
+      builder: (BuildContext context, Widget? child) {
+        return FlutterSmartDialog(child: _builder(child));
+      },
     );
   }
 }
 
 ///独立处理全局 Bloc 和 Provider
-Widget _builder(BuildContext context, Widget? child) {
-  Get.context;
+Widget _builder(Widget? child) {
   return MultiBlocProvider(
     providers: [
       //此处通过MultiBlocProvider创建的Bloc或者Cubit是全局的
@@ -49,6 +50,19 @@ Widget _builder(BuildContext context, Widget? child) {
 Widget _customGlobalWidget(Widget? child) {
   return ChangeNotifierEasyP(
     create: (BuildContext context) => CounterGlobalEasyP(),
-    child: FlutterSmartDialog(child: child),
+    child: child,
   );
 }
+
+// Widget _builder(BuildContext context, Widget? child) {
+//   Get.context;
+//   return MultiProvider(
+//     providers: [
+//       //此处通过MultiProvider创建的Provider是全局的
+//       ChangeNotifierProvider.value(value: ProSpanOneProvider()),
+//
+//       // ChangeNotifierProvider(create: (context) => ProSpanOneProvider()),
+//     ],
+//     child: _customGlobalWidget(child),
+//   );
+// }

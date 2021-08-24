@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_use/app/base/base_scaffold.dart';
-import 'package:flutter_use/module/example/getx/counter_get/logic.dart';
 import 'package:get/get.dart';
 
-class GetCounterPage extends StatelessWidget {
-  final GetCounterLogic logic = Get.put(GetCounterLogic());
+import 'logic.dart';
+
+class GetCounterRxPage extends StatelessWidget {
+  final GetCounterRxLogic logic = Get.put(GetCounterRxLogic());
 
   @override
   Widget build(BuildContext context) {
@@ -25,23 +26,3 @@ class GetCounterPage extends StatelessWidget {
     );
   }
 }
-
-// class Counter extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Text('Counter'),
-//     );
-//   }
-// }
-
-// class Counter extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Obx(() {
-//         return Text('Counter');
-//       }),
-//     );
-//   }
-// }
